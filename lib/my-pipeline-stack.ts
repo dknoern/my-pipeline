@@ -11,19 +11,19 @@ export class MyPipelineStack extends cdk.Stack {
       pipelineName: 'MyPipeline',
       synth: new ShellStep('Synth', {
         input: CodePipelineSource.gitHub('dknoern/my-pipeline', 'main',{
-          authentication: cdk.SecretValue.secretsManager('github-access-token'),
+          authentication: cdk.SecretValue.secretsManager('pipeline-token'),
         }),
         commands: ['npm ci', 'npm run build', 'npx cdk synth']
       })
     });
 
     const betaStage = pipeline.addStage(new MyPipelineAppStage(this, "beta", {
-      env: { account: "284870623433", region: "us-west-2" }
+      env: { account: "484951121041", region: "us-west-2" }
     }));
     betaStage.addPost(new ManualApprovalStep('approval'));
 
   const gammaStage = pipeline.addStage(new MyPipelineAppStage(this, 'gamma', {
-    env: { account: '284870623433', region: 'us-west-1' }
+    env: { account: '484951121041', region: 'us-west-1' }
   }));
 
       
